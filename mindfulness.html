@@ -1,14 +1,33 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mindfulness</title>
 <link rel="stylesheet" href="styles.css">
-</head><body>
+<style>
+  .breath {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    border-radius: 50%;
+    background: lightblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 4s ease-in-out;
+  }
+  .inhale { transform: scale(1.3); background: skyblue; }
+  .exhale { transform: scale(0.8); background: lightgreen; }
+</style>
+</head>
+<body>
 <nav class="nav"><div class="brand">GreenBite</div><a href="index.html">Home</a></nav>
 <main>
   <h1>Mindfulness</h1>
   <div class="card">
-    <div id="breath" class="breath">Breathing Circle</div>
+    <div id="breath" class="breath">Breathe</div>
+    <p id="breathText"></p>
     <div>
       <button id="startBreath">Start Breath</button>
       <button id="stopBreath">Stop</button>
@@ -24,21 +43,38 @@
   </div>
 </main>
 <script>
-let breathInterval=null;
-function animateBreath(start){
-  const el=document.getElementById('breath');
-  if(start){
-    el.classList.add('inhale');
-    breathInterval = setInterval(()=> el.classList.toggle('inhale'), 4000);
-  }else{
-    clearInterval(breathInterval); breathInterval=null;
-    el.classList.remove('inhale');
-  }
-}
-document.getElementById('startBreath').addEventListener('click', ()=> animateBreath(true));
-document.getElementById('stopBreath').addEventListener('click', ()=> animateBreath(false));
+let cycle = [
+  {phase:'Inhale', class:'inhale', duration:4000},
+  {phase:'Hold', class:'', duration:2000},
+  {phase:'Exhale', class:'exhale', duration:4000},
+  {phase:'Hold', class:'', duration:2000}
+];
+let breathInterval=null, breathIndex=0;
 
-// Simple session timer + tracking
+function startBreathing(){
+  const el=document.getElementById('breath');
+  const txt=document.getElementById('breathText');
+
+  function runCycle(){
+    let step=cycle[breathIndex];
+    el.className='breath '+step.class;
+    txt.textContent=step.phase;
+    breathIndex=(breathIndex+1)%cycle.length;
+    breathInterval=setTimeout(runCycle, step.duration);
+  }
+  runCycle();
+}
+function stopBreathing(){
+  clearTimeout(breathInterval);
+  breathIndex=0;
+  document.getElementById('breath').className='breath';
+  document.getElementById('breathText').textContent='';
+}
+
+document.getElementById('startBreath').addEventListener('click', startBreathing);
+document.getElementById('stopBreath').addEventListener('click', stopBreathing);
+
+// Timer
 document.getElementById('startTimer').addEventListener('click', ()=>{
   const mins = Number(document.getElementById('minInput').value) || 1;
   let secs = mins*60;
@@ -49,23 +85,18 @@ document.getElementById('startTimer').addEventListener('click', ()=>{
   },1000);
 });
 
-// ambient sound using oscillator as simple tone
-let ambientOn = false, ambientCtx=null, ambientOsc=null;
+// Ambient sound with audio file
+let ambientOn=false, audio=new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+audio.loop=true; audio.volume=0.2;
+
 document.getElementById('soundToggle').addEventListener('click', ()=>{
   if(!ambientOn){
+    audio.play();
     ambientOn=true;
-    try{
-      ambientCtx = new (window.AudioContext||window.webkitAudioContext)();
-      ambientOsc = ambientCtx.createOscillator(); ambientOsc.frequency.value=220; ambientOsc.type='sine';
-      const gain = ambientCtx.createGain(); gain.gain.value=0.02;
-      ambientOsc.connect(gain); gain.connect(ambientCtx.destination);
-      ambientOsc.start();
-    }catch(e){}
     document.getElementById('soundToggle').textContent='Stop Ambient';
   }else{
+    audio.pause();
     ambientOn=false;
-    if(ambientOsc) ambientOsc.stop();
-    if(ambientCtx) ambientCtx.close();
     document.getElementById('soundToggle').textContent='Toggle Ambient';
   }
 });
@@ -77,4 +108,5 @@ function trackSession(){
   localStorage.setItem(k, JSON.stringify(arr));
 }
 </script>
-</body></html>
+</body>
+</html>
