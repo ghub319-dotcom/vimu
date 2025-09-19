@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenBite - Workouts</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/workouts.js"></script>
+</head>
+<body>
+  <header><h1>Workout Generator</h1></header>
+  <form id="workoutForm">
+    <label>Body Part:
+      <select id="bodyPart">
+        <option>Arms</option>
+        <option>Legs</option>
+        <option>Full Body</option>
+      </select>
+    </label>
+    <label>Equipment:
+      <select id="equipment">
+        <option>None</option>
+        <option>Dumbbells</option>
+      </select>
+    </label>
+    <button type="submit">Generate Workout</button>
+  </form>
+  <div id="workoutPlan"></div>
+</body>
+</html>

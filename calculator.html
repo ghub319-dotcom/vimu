@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenBite - Calorie Calculator</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/calculator.js"></script>
+</head>
+<body>
+  <header><h1>Calorie & Nutrition Calculator</h1></header>
+  <form id="calcForm">
+    <input type="number" id="age" placeholder="Age" required>
+    <select id="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <input type="number" id="height" placeholder="Height (cm)" required>
+    <input type="number" id="weight" placeholder="Weight (kg)" required>
+    <select id="activity">
+      <option value="1.2">Sedentary</option>
+      <option value="1.375">Lightly active</option>
+      <option value="1.55">Moderately active</option>
+      <option value="1.725">Very active</option>
+      <option value="1.9">Super active</option>
+    </select>
+    <button type="submit">Calculate</button>
+  </form>
+  <div id="results"></div>
+</body>
+</html>

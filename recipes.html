@@ -1,0 +1,33 @@
+You said:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenBite - Healthy Recipes</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/recipes.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Healthy Recipes</h1>
+  </header>
+
+  <section id="recipeList" class="grid"></section>
+
+  <div id="recipeModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal">&times;</span>
+      <h2 id="recipeTitle"></h2>
+      <img id="recipeImage" src="" alt="Recipe image">
+      <p id="recipeDesc"></p>
+      <h3>Ingredients</h3>
+      <ul id="ingredients"></ul>
+      <h3>Steps</h3>
+      <ol id="steps"></ol>
+      <h3>Nutrition Info</h3>
+      <table id="nutritionTable" border="1"></table>
+    </div>
+  </div>
+</body>
+</html>
